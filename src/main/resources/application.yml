@@ -1,0 +1,31 @@
+server:
+  servlet:
+    context-path: /
+  port: 8080
+spring:
+  application:
+    name: assignment
+  datasource:
+    username: root
+    password: root
+    url: jdbc:h2:~\.mubasher\db\assignment;mode=mysql;MVCC=true;LOCK_TIMEOUT=10000
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+  liquibase:
+    enabled: true
+    change-log: classpath:db.changelog-master.xml
+
+logging:
+  file: ${user.home}/.mubasher/logging/assignment-app.log
+  level:
+    org:
+      hibernate:
+        type: INFO
+
+dnow:
+  swagger:
+    title: Payment Service
+    description: This service is to perform configuration for payment service.
