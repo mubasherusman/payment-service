@@ -1,5 +1,6 @@
 package com.mubasher.assignment.payment.service;
 
+import com.mubasher.assignment.PaymentApplication;
 import com.mubasher.assignment.domain.dto.ListResponse;
 import com.mubasher.assignment.domain.dto.PaymentMethodDto;
 import com.mubasher.assignment.domain.dto.PaymentPlanDto;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -25,8 +27,9 @@ import static org.hamcrest.Matchers.*;
  * @author Mubasher Usman
  */
 @RunWith(SpringRunner.class)
+@ContextConfiguration(classes = PaymentApplication.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PaymentMethodConfigurationIT {
+public class PaymentMethodConfigurationControllerTest {
 
 	@LocalServerPort
 	private int port;
@@ -34,7 +37,7 @@ public class PaymentMethodConfigurationIT {
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
 	@Test
-	public void testSearchPaymentMethod() throws Exception {
+	public void testSearchPaymentMethod() {
 		PaymentMethodDto creditCardDto = getPaymentMethodDto();
 		String searchTerm = creditCardDto.getName();
 		ResponseEntity<PaymentMethodDto> res = restTemplate.postForEntity(
