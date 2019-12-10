@@ -31,20 +31,26 @@ public class GlobalExceptionHandler {
 				HttpStatus.BAD_REQUEST.value(), ex.getAppCode());
 	}
 
-
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ExceptionResponse handleInvalidValueException(final MethodArgumentNotValidException ex) {
+	public ExceptionResponse handleInvalidValueException(
+			final MethodArgumentNotValidException ex) {
 		log.error("Exception : ", ex);
-		if(ex.getBindingResult().hasFieldErrors()) {
+		if (ex.getBindingResult().hasFieldErrors()) {
 			List<FieldError> errors = ex.getBindingResult().getFieldErrors();
-			List<String> er = errors.stream().map(e->e.getDefaultMessage()).collect(Collectors.toList());
-			return new ExceptionResponse(GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorMessage(),er.toString(),
-			HttpStatus.BAD_REQUEST.value(), GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorCode());
-		} else {
-			return new ExceptionResponse(GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorMessage(),ex.getMessage(),
-			HttpStatus.BAD_REQUEST.value(), GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorCode());
+			List<String> er = errors.stream().map(e -> e.getDefaultMessage())
+					.collect(Collectors.toList());
+			return new ExceptionResponse(
+					GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorMessage(),
+					er.toString(), HttpStatus.BAD_REQUEST.value(),
+					GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorCode());
+		}
+		else {
+			return new ExceptionResponse(
+					GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorMessage(),
+					ex.getMessage(), HttpStatus.BAD_REQUEST.value(),
+					GenericApiErrorType.MISSING_REQUIRED_FIELD.getErrorCode());
 		}
 	}
 

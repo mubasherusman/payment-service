@@ -45,8 +45,9 @@ public class PaymentMethodConfigurationController {
 	@ApiOperation(value = "Add new payment method.")
 	@ApiResponses({
 			@ApiResponse(code = 201, message = "Success", response = PaymentMethodDto.class) })
-	public PaymentMethodDto addPaymentMethod(@RequestBody @Valid PaymentMethodDto request) {
-		return paymentMethodService.addPaymentMethod(request);
+	public PaymentMethodDto addPaymentMethod(
+			@RequestBody @Valid PaymentMethodDto request) {
+		return paymentMethodService.createPaymentMethod(request);
 	}
 
 	/**
@@ -57,7 +58,8 @@ public class PaymentMethodConfigurationController {
 	@ApiOperation(value = "Update payment method.")
 	@ApiResponses({
 			@ApiResponse(code = 202, message = "Success", response = PaymentMethodDto.class) })
-	public PaymentMethodDto updatePaymentMethod(@RequestBody @Valid PaymentMethodDto request) {
+	public PaymentMethodDto updatePaymentMethod(
+			@RequestBody @Valid PaymentMethodDto request) {
 		return paymentMethodService.updatePaymentMethod(request);
 	}
 

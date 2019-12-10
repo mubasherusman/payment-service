@@ -8,7 +8,7 @@ public interface IPaymentMethodService {
 
 	ListResponse searchPaymentMethod(PaymentMethodSearchRequest request);
 
-	PaymentMethodDto addPaymentMethod(PaymentMethodDto requestDto);
+	PaymentMethodDto createPaymentMethod(PaymentMethodDto requestDto);
 
 	PaymentMethodDto updatePaymentMethod(PaymentMethodDto requestDto);
 

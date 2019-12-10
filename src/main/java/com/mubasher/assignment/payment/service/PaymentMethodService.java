@@ -56,12 +56,13 @@ public class PaymentMethodService implements IPaymentMethodService {
 	}
 
 	@Override
-	public PaymentMethodDto addPaymentMethod(PaymentMethodDto requestDto) {
+	public PaymentMethodDto createPaymentMethod(PaymentMethodDto requestDto) {
 		CommonUtils.checkRequired(requestDto, GenericApiErrorType.MISSING_REQUIRED_FIELD);
 		final PaymentMethod paymentMethod = mapper.mapFrom(requestDto);
 		paymentMethod.setId(null);
-		if(paymentMethod.getPaymentPlans() !=null && !paymentMethod.getPaymentPlans().isEmpty()){
-			paymentMethod.getPaymentPlans().forEach(e->{
+		if (paymentMethod.getPaymentPlans() != null
+				&& !paymentMethod.getPaymentPlans().isEmpty()) {
+			paymentMethod.getPaymentPlans().forEach(e -> {
 				e.setId(null);
 				e.setPaymentMethod(paymentMethod);
 			});
