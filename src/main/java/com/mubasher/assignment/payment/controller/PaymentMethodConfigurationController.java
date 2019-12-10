@@ -26,7 +26,7 @@ public class PaymentMethodConfigurationController {
 	private IPaymentMethodService paymentMethodService;
 
 	/**
-	 * Get All Payment Methods
+	 * Get All Payment Methods Or Search by id of Payment plans or Payment Method Name
 	 * @return a response list of {@link PaymentMethodDto}
 	 */
 	@GetMapping
@@ -57,7 +57,7 @@ public class PaymentMethodConfigurationController {
 	@PutMapping
 	@ApiOperation(value = "Update payment method.")
 	@ApiResponses({
-			@ApiResponse(code = 202, message = "Success", response = PaymentMethodDto.class) })
+			@ApiResponse(code = 200, message = "Success", response = PaymentMethodDto.class) })
 	public PaymentMethodDto updatePaymentMethod(
 			@RequestBody @Valid PaymentMethodDto request) {
 		return paymentMethodService.updatePaymentMethod(request);

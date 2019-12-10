@@ -11,6 +11,7 @@ import com.mubasher.assignment.domain.enums.PaymentType;
 import com.mubasher.assignment.domain.mapper.PaymentMethodMapper;
 import com.mubasher.assignment.domain.mapper.PaymentPlanMapper;
 import com.mubasher.assignment.payment.repository.IPaymentMethodRepository;
+import com.mubasher.assignment.payment.repository.IPaymentPlanRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 
 import java.math.BigDecimal;
@@ -40,6 +42,9 @@ public class PaymentServiceTest {
 
 	@Mock
 	private IPaymentMethodRepository pmRepository;
+
+	@Mock
+	private IPaymentPlanRepository ppRepository;
 
 	@Mock
 	private PaymentMethodMapper mapper;
@@ -102,14 +107,16 @@ public class PaymentServiceTest {
 
 	@Test
 	public void searchByIdPaymentMethodTest() {
-		Mockito.when(pmRepository.findById(anyLong()))
-				.thenReturn(Optional.of(getPaymentMethod()));
-		Mockito.when(mapper.mapTo(any())).thenReturn(getPaymentMethodDto());
+		Mockito.when(ppRepository.findById(anyLong()))
+				.thenReturn(Optional.of(getPaymentPlan()));
+		Mockito.when(mapper.mapToWithoutPaymentPlan(any()))
+				.thenReturn(getPaymentMethodDto());
+		Mockito.when(paymentPlanMapper.mapTo(any())).thenReturn(getPaymentPlansDto());
 
 		ListResponse result = paymentMethodService
 				.searchPaymentMethod(PaymentMethodSearchRequest.builder().id(1L).build());
 
-		Mockito.verify(pmRepository, Mockito.times(1)).findById(anyLong());
+		Mockito.verify(ppRepository, Mockito.times(1)).findById(anyLong());
 
 		Assert.assertNotNull(result);
 	}

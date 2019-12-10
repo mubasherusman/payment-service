@@ -6,17 +6,18 @@ import com.mubasher.assignment.commons.util.CommonUtils;
 import com.mubasher.assignment.domain.dto.ListResponse;
 import com.mubasher.assignment.domain.dto.PaymentMethodDto;
 import com.mubasher.assignment.domain.dto.PaymentMethodSearchRequest;
+import com.mubasher.assignment.domain.dto.PaymentPlanDto;
 import com.mubasher.assignment.domain.entity.PaymentMethod;
 import com.mubasher.assignment.domain.entity.PaymentPlan;
 import com.mubasher.assignment.domain.mapper.PaymentMethodMapper;
 import com.mubasher.assignment.domain.mapper.PaymentPlanMapper;
 import com.mubasher.assignment.payment.repository.IPaymentMethodRepository;
+import com.mubasher.assignment.payment.repository.IPaymentPlanRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class PaymentMethodService implements IPaymentMethodService {
 
 	@Autowired
 	private IPaymentMethodRepository pmRepository;
+
+	@Autowired
+	private IPaymentPlanRepository ppRepository;
 
 	@Autowired
 	private PaymentMethodMapper mapper;
@@ -41,10 +45,13 @@ public class PaymentMethodService implements IPaymentMethodService {
 			return ListResponse.<PaymentMethodDto>builder().content(result).build();
 		}
 		else if (!CommonUtils.isEmpty(request.getId())) {
-			PaymentMethod paymentMethod = pmRepository.findById(request.getId())
+			PaymentPlan paymentPlan = ppRepository.findById(request.getId())
 					.orElseThrow(() -> new ResourceNotFoundException(
 							GenericApiErrorType.RECORD_NOT_FOUND_EXCEPTION));
-			PaymentMethodDto paymentMethodDto = mapper.mapTo(paymentMethod);
+			PaymentPlanDto paymentPlanDto = paymentPlanMapper.mapTo(paymentPlan);
+			PaymentMethodDto paymentMethodDto = mapper
+					.mapToWithoutPaymentPlan(paymentPlan.getPaymentMethod());
+			paymentMethodDto.setPaymentPlans(Arrays.asList(paymentPlanDto));
 			return ListResponse.builder().content(Arrays.asList(paymentMethodDto))
 					.build();
 		}
